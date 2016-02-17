@@ -99,8 +99,6 @@ create.matrix<-function(description)
 
 lynx.y<-create.matrix("lynx")
 hare.y<-create.matrix("hare") 
-coyote.y<-create.matrix("coyote")
-moose.y<-create.matrix("moose")
 prey.y<-create.matrix(c("squirrel","grouse","hare"))
 
 # ---- Sample covariates ----
