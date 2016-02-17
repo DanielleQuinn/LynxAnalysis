@@ -48,38 +48,43 @@ abundata2$cpue<-abundata2$abundance/abundata2$length*1000
 # Remove
 abundata2<-abundata2[-which(is.na(abundata2$elevation)),]
 
+# Center Elevetion #
+abundata2$elevation2<-as.vector(scale(abundata2$elevation, scale=FALSE))
+# Log Length #
+abundata2$Llength<-log(abundata2$length)
+
 # ---- Buffer vs Non-Buffer ----
 # Lynx #
 ggplot(abundata2[abundata2$description=="lynx",])+
   geom_boxplot(aes(x=bufferL, y=cpue))+theme_bw(25)+
   ylab("Tracks per Km")+xlab("")
 
-wilcox.test(cpue~bufferL, data=abundata2[abundata2$description=="lynx",]) # p = 0.127
-wilcox.test(abundance~bufferL, data=abundata2[abundata2$description=="lynx",]) # p = 0.136
+wilcox.test(cpue~bufferL, data=abundata2[abundata2$description=="lynx",]) # p = 0.175
+wilcox.test(abundance~bufferL, data=abundata2[abundata2$description=="lynx",]) # p = 0.186
 
 # Hare #
 ggplot(abundata2[abundata2$description=="hare",])+
   geom_boxplot(aes(x=bufferL, y=cpue))+theme_bw(25)+
   ylab("Tracks per Km")+xlab("")
 
-wilcox.test(cpue~bufferL, data=abundata2[abundata2$description=="hare",]) # p = 0.177
-wilcox.test(abundance~bufferL, data=abundata2[abundata2$description=="hare",]) # p = 0.493
+wilcox.test(cpue~bufferL, data=abundata2[abundata2$description=="hare",]) # p = 0.445
+wilcox.test(abundance~bufferL, data=abundata2[abundata2$description=="hare",]) # p = 964
 
 # Squirrel #
 ggplot(abundata2[abundata2$description=="squirrel",])+
   geom_boxplot(aes(x=bufferL, y=cpue))+theme_bw(25)+
   ylab("Tracks per Km")+xlab("")
 
-wilcox.test(cpue~bufferL, data=abundata2[abundata2$description=="squirrel",]) # p = 0.691
-wilcox.test(abundance~bufferL, data=abundata2[abundata2$description=="squirrel",]) # p = 0.814
+wilcox.test(cpue~bufferL, data=abundata2[abundata2$description=="squirrel",]) # p = 0.954
+wilcox.test(abundance~bufferL, data=abundata2[abundata2$description=="squirrel",]) # p = 0.817
 
 # Marten #
 ggplot(abundata2[abundata2$description=="marten",])+
   geom_boxplot(aes(x=bufferL, y=cpue))+theme_bw(25)+
   ylab("Tracks per Km")+xlab("")
 
-wilcox.test(cpue~bufferL, data=abundata2[abundata2$description=="marten",]) # p = 0.481
-wilcox.test(abundance~bufferL, data=abundata2[abundata2$description=="marten",]) # p = 0.622
+wilcox.test(cpue~bufferL, data=abundata2[abundata2$description=="marten",]) # p = 0.610
+wilcox.test(abundance~bufferL, data=abundata2[abundata2$description=="marten",]) # p = 0.776
 
 # ---- Habitat ----
 meanbyhab<-data.frame(abundata2%>%
@@ -91,16 +96,16 @@ ggplot(abundata2[abundata2$description=="lynx",])+
   geom_boxplot(aes(x=habitat, y=cpue))+theme_bw(25)+
   ylab("Tracks per Km")+xlab("Habitat")
 
-kruskal.test(cpue~habitat, data=abundata2[abundata2$description=="lynx",]) # p = 0.033
-kruskal.test(abundance~habitat, data=abundata2[abundata2$description=="lynx",]) # p = 0.037
+kruskal.test(cpue~habitat, data=abundata2[abundata2$description=="lynx",]) # p = 0.048
+kruskal.test(abundance~habitat, data=abundata2[abundata2$description=="lynx",]) # p = 0.053
 
 wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="lynx" & abundata2$habitat %in% c("natural","treated"),]) # p = 0.015
-wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="lynx" & abundata2$habitat %in% c("natural","clearcut"),]) # p = 0.172
-wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="lynx" & abundata2$habitat %in% c("clearcut","treated"),]) # p = 1
+wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="lynx" & abundata2$habitat %in% c("natural","clearcut"),]) # p = 0.399
+wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="lynx" & abundata2$habitat %in% c("clearcut","treated"),]) # p = 0.652
 
-wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="lynx" & abundata2$habitat %in% c("natural","treated"),]) # p = 0.016
-wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="lynx" & abundata2$habitat %in% c("natural","clearcut"),]) # p = 0.179
-wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="lynx" & abundata2$habitat %in% c("clearcut","treated"),]) # p = 1
+wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="lynx" & abundata2$habitat %in% c("natural","treated"),]) # p = 0.019
+wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="lynx" & abundata2$habitat %in% c("natural","clearcut"),]) # p = 0.415
+wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="lynx" & abundata2$habitat %in% c("clearcut","treated"),]) # p = 0.656
 
 # Hare #
 ggplot(abundata2[abundata2$description=="hare",])+
@@ -110,11 +115,11 @@ ggplot(abundata2[abundata2$description=="hare",])+
 kruskal.test(cpue~habitat, data=abundata2[abundata2$description=="hare",]) # p < 0.01
 kruskal.test(abundance~habitat, data=abundata2[abundata2$description=="hare",]) # p < 0.01
 
-wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="hare" & abundata2$habitat %in% c("natural","treated"),]) # p = 0.422
+wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="hare" & abundata2$habitat %in% c("natural","treated"),]) # p = 0.381
 wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="hare" & abundata2$habitat %in% c("natural","clearcut"),]) # p < 0.01
 wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="hare" & abundata2$habitat %in% c("clearcut","treated"),]) # p < 0.01
 
-wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="hare" & abundata2$habitat %in% c("natural","treated"),]) # p = 0.204
+wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="hare" & abundata2$habitat %in% c("natural","treated"),]) # p = 0.174
 wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="hare" & abundata2$habitat %in% c("natural","clearcut"),]) # p < 0.01
 wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="hare" & abundata2$habitat %in% c("clearcut","treated"),]) # p < 0.01
 
@@ -126,11 +131,11 @@ ggplot(abundata2[abundata2$description=="squirrel",])+
 kruskal.test(cpue~habitat, data=abundata2[abundata2$description=="squirrel",]) # p < 0.01
 kruskal.test(abundance~habitat, data=abundata2[abundata2$description=="squirrel",]) # p < 0.01
 
-wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="squirrel" & abundata2$habitat %in% c("natural","treated"),]) # p = 0.834
+wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="squirrel" & abundata2$habitat %in% c("natural","treated"),]) # p = 0.790
 wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="squirrel" & abundata2$habitat %in% c("natural","clearcut"),]) # p < 0.01
 wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="squirrel" & abundata2$habitat %in% c("clearcut","treated"),]) # p < 0.01
 
-wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="squirrel" & abundata2$habitat %in% c("natural","treated"),]) # p = 0.914
+wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="squirrel" & abundata2$habitat %in% c("natural","treated"),]) # p = 0.872
 wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="squirrel" & abundata2$habitat %in% c("natural","clearcut"),]) # p < 0.01
 wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="squirrel" & abundata2$habitat %in% c("clearcut","treated"),]) # p < 0.01
 
@@ -142,13 +147,13 @@ ggplot(abundata2[abundata2$description=="marten",])+
 kruskal.test(cpue~habitat, data=abundata2[abundata2$description=="marten",]) # p < 0.01
 kruskal.test(abundance~habitat, data=abundata2[abundata2$description=="marten",]) # p < 0.01
 
-wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="marten" & abundata2$habitat %in% c("natural","treated"),]) # p = 0.022
-wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="marten" & abundata2$habitat %in% c("natural","clearcut"),]) # p = 0.058
-wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="marten" & abundata2$habitat %in% c("clearcut","treated"),]) # p < 0.01
+wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="marten" & abundata2$habitat %in% c("natural","treated"),]) # p = 0.020
+wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="marten" & abundata2$habitat %in% c("natural","clearcut"),]) # p = 0.111
+wilcox.test(cpue~habitat,data=abundata2[abundata2$description=="marten" & abundata2$habitat %in% c("clearcut","treated"),]) # p = 0.014
 
-wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="marten" & abundata2$habitat %in% c("natural","treated"),]) # p = 0.020
-wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="marten" & abundata2$habitat %in% c("natural","clearcut"),]) # p = 0.058
-wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="marten" & abundata2$habitat %in% c("clearcut","treated"),]) # p < 0.01
+wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="marten" & abundata2$habitat %in% c("natural","treated"),]) # p = 0.0185
+wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="marten" & abundata2$habitat %in% c("natural","clearcut"),]) # p = 0.111
+wilcox.test(abundance~habitat,data=abundata2[abundata2$description=="marten" & abundata2$habitat %in% c("clearcut","treated"),]) # p = 0.014
 
 # ---- Buffer Distance ----
 # Lynx #
@@ -224,11 +229,6 @@ drop1(model2, test="Chi")
 # Non-significant habitat and elevation effect, nearly significant buffer effect
 
 # ---- ZIP ----
-# Center Elevetion #
-abundata2$elevation2<-as.vector(scale(abundata2$elevation, scale=FALSE))
-# Log Length #
-abundata2$Llength<-log(abundata2$length)
-
 zip1<-zeroinfl(abundance~habitat+buffer_distance+elevation2+offset(Llength)|
                  habitat+buffer_distance+elevation2,
                data=abundata2[abundata2$description=="lynx",],
@@ -237,53 +237,118 @@ summary(zip1)
 dispersion(zip1, modeltype='zp') # 1.72
 
 # ---- ZI Negative Binomial ----
+# Set up some variables for plotting #
+mylimits<-c(325-mean(abundata2$elevation), 500-mean(abundata2$elevation))
+mybreaks<-c(325-mean(abundata2$elevation), 400-mean(abundata2$elevation), 475-mean(abundata2$elevation))
+mylabels<-c(350, 400, 450)
+
+rm(zinb1)
+rm(plotpredicted)
+rm(plotpredicted2)
+rm(plotzeros)
+rm(plotzeros2)
+
+# Set Animal #
+useme<-"squirrel"
+if(useme %in% c("hare","lynx")) {usehab=c("natural","treated","clearcut");
+                                 mycols=c("aquamarine4","darkorchid2","brown3");
+                                 usedata=abundata2}
+if(useme %in% c("squirrel","marten")) {usehab=c("natural","treated");
+                                       mycols=c("aquamarine4","darkorchid2");
+                                       usedata=droplevels(abundata2[abundata2$habitat %in% usehab,])}
+
+
 # Quick Look at the Data #
-ggplot(abundata2[abundata2$description=="lynx",])+
-  geom_point(aes(x=buffer_distance, y=elevation), col="red", size=3, alpha=0.5,
-             data=abundata2[abundata2$description=="lynx" & abundata2$abundance==0,])+
-  geom_point(aes(x=buffer_distance, y=elevation), col="blue", size=3, alpha=0.5,
-             data=abundata2[abundata2$description=="lynx" & abundata2$abundance>0,])+
-  facet_grid(.~habitat)+theme_bw(15)
+usedata$pa<-"0"
+usedata$pa[usedata$abundance>0]<-"> 0"
+usedata$pa<-with(usedata, factor(pa, levels=c("0","> 0")))
+
+preZINB<-ggplot(usedata[usedata$description==useme,])+
+  geom_point(aes(x=buffer_distance, y=elevation, col=pa), size=3, alpha=0.5)+
+  scale_colour_manual(values=c("red","blue"), name="Track Count")+
+  facet_grid(.~habitat)+theme_bw(15)+
+  ggtitle(useme)+xlab("Distance to Buffer (m)")+
+  ylab("Elevation (m)")
+ggsave(paste0("Figures and Tables/preZINB_",useme,".png"), preZINB,
+       width=25, height=15, units="cm")
 
 # Run Full Model #
 zinb1<-zeroinfl(abundance~habitat+buffer_distance+elevation2+offset(Llength)|
                   habitat+buffer_distance+elevation2,
-                data=abundata2[abundata2$description=="lynx",],
+                data=usedata[usedata$description==useme,],
                 dist="negbin")
 summary(zinb1)
-dispersion(zinb1, modeltype='znb') # 0.936
+dispersion(zinb1, modeltype='znb')
 
-lrtest(zip1, zinb1) # Negative binomial model is better
+# lrtest(zip1, zinb1) # Negative binomial model is better
 
-newdata<-expand.grid(habitat=c("natural","treated","clearcut"),
+newdata<-expand.grid(habitat=usehab,
                      buffer_distance=seq(from=0, to=1500, by=250),
-                     elevation2=seq(from=min(abundata2$elevation2),
-                                     to=max(abundata2$elevation2),
+                     elevation2=seq(from=min(usedata$elevation2),
+                                     to=max(usedata$elevation2),
                                      length=25),
-                     Llength=mean(abundata2$Llength))
+                     Llength=mean(usedata$Llength))
 newdata$abundance<-predict(zinb1, newdata, type="response")
 newdata$zero<-predict(zinb1, newdata, type="zero")
 
 # Predicted Abundance #
-ggplot(newdata)+
-  geom_line(aes(x=elevation2, y=abundance), size=2)+
+plotpredicted<-ggplot(newdata)+
+  geom_line(aes(x=elevation2, y=abundance), size=1)+
   facet_grid(habitat~buffer_distance)+
   theme_bw(15)+
   ylab("Predicted Abundance")+
-  xlab("Eleveation (Centered)")
+  xlab("Elevation (m)")+
+  ggtitle(useme)+
+  scale_x_continuous(limits=mylimits, breaks=mybreaks, labels=mylabels)
+ggsave(paste0("Figures and Tables/fullZINB_predict_",useme,".png"), plotpredicted,
+       width=25, height=15, units="cm")
+plotpredicted2<-ggplot(newdata)+
+  geom_line(aes(x=elevation2, y=abundance, col=habitat), size=1)+
+  facet_grid(.~buffer_distance)+
+  theme_bw(15)+
+  ylab("Predicted Abundance")+
+  xlab("Elevation (m)")+
+  ggtitle(useme)+
+  scale_colour_manual(values=mycols, name="Habitat")+
+  scale_x_continuous(limits=mylimits, breaks=mybreaks, labels=mylabels)
+ggsave(paste0("Figures and Tables/fullZINB_predict2_",useme,".png"), plotpredicted2,
+       width=25, height=10, units="cm")
 # Why are there peaks?
 
 # Predicted False Zeros #
-ggplot(newdata)+
-  geom_line(aes(x=elevation2, y=zero), size=2)+
+plotzeros<-ggplot(newdata)+
+  geom_line(aes(x=elevation2, y=zero), size=1)+
   facet_grid(habitat~buffer_distance)+
   theme_bw(15)+
   ylab("Predicted Probability of False Zeros")+
-  xlab("Elevation (Centered)")
+  xlab("Elevation (m)")+
+  ggtitle(useme)+
+  scale_x_continuous(limits=mylimits, breaks=mybreaks, labels=mylabels)
+ggsave(paste0("Figures and Tables/fullZINB_falsezeros_",useme,".png"), plotzeros,
+       width=25, height=15, units="cm")
+plotzeros2<-ggplot(newdata)+
+  geom_line(aes(x=elevation2, y=zero, col=habitat), size=1)+
+  facet_grid(.~buffer_distance)+
+  theme_bw(15)+
+  ylab("Predicted Probability of False Zeros")+
+  xlab("Elevation (m)")+
+  ggtitle(useme)+
+  scale_colour_manual(values=mycols, name="Habitat")+
+  scale_x_continuous(limits=mylimits, breaks=mybreaks, labels=mylabels)
+ggsave(paste0("Figures and Tables/fullZINB_falsezeros2_",useme,".png"), plotzeros2,
+       width=25, height=10, units="cm")
 
-### Show these to Trevor. What do they mean? ###
 
-# Model Comparisons #
+
+
+
+
+
+
+
+
+
+# ---- Model Comparisons ----
 mytheta<-zinb1$theta
 
 # Function from Zurr for likelihood ratio test #
