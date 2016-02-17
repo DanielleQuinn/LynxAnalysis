@@ -67,7 +67,8 @@ basicinfo<-function(SPECIES)
 }
 
 # ---- Run Occupancy Models ----
-basicinfo("lynx")
+useme<-"marten"
+basicinfo(useme)
 
 # ---- MODEL 1: Null Model ----
 summary(m1)
@@ -285,13 +286,15 @@ newdata<-newdata[-which(newdata$buffer_distance==0 & newdata$habitat=="clearcut"
 
 plot14<-ggplot(newdata)+
   geom_line(aes(x=elevation, y=predicted, col=habitat), size=2)+
-  theme_bw(22)+
+  theme_bw(15)+
   xlab("Elevation (m)")+
   ylab("Predicted Occupancy")+
   facet_grid(.~buffer_distance)+
   ylim(c(0,1))+
-  scale_colour_manual(values=c("aquamarine4", "darkorchid2", "brown3"))
+  scale_colour_manual(values=c("aquamarine4", "darkorchid2", "brown3"))+
+  ggtitle(useme)
 plot14
+ggsave(paste0("Figures and Tables/fullocc_",useme,".png"), plot14, width=25, height=15, units="cm")
 
 # ---- MODEL 15: Buffer + Buffer Distance + Elevation ----
 newdata<-expand.grid(buffer=unique(cellcovs2$buffer),
