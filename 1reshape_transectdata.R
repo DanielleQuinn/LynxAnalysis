@@ -1,7 +1,7 @@
 # Lynx Project #
 # This script reshapes the transect data #
 
-# ---- Load Packages ----
+# ---- Load my Packages ----
 library(reshape2)
 
 # ---- Set Working Directory ----
